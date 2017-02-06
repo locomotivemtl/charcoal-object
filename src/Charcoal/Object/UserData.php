@@ -10,6 +10,9 @@ use InvalidArgumentException;
 // From `charcoal-core`
 use Charcoal\Model\AbstractModel;
 
+// From `charcoal-translation`
+use Charcoal\Translator\Translator;
+
 // Local namespace (`charcoal-object`) dependency
 use Charcoal\Object\UserDataInterface;
 
@@ -46,6 +49,24 @@ class UserData extends AbstractModel implements
      * @var DateTimeInterface|null
      */
     private $ts;
+
+    /**
+     * @var Translator
+     */
+    private $translator;
+
+    /**
+     * Dependencies
+     * @param Container $container DI Container.
+     * @return void
+     */
+    public function setDependencies(Container $container)
+    {
+        parent::setDependencies($container);
+
+        $this->setTranslator($container['translator']);
+    }
+
 
     /**
      * Set the client IP address.
@@ -238,5 +259,22 @@ class UserData extends AbstractModel implements
         }
 
         return $result;
+    }
+
+    /**
+     * @param Translator $translator The translator service.
+     * @return void
+     */
+    private function setTranslator(Translator $translator)
+    {
+        $this->translator = $translator;
+    }
+
+    /**
+     * @return Translator
+     */
+    protected function translator()
+    {
+        return $this->translator;
     }
 }

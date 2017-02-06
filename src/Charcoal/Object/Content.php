@@ -15,6 +15,9 @@ use Charcoal\Factory\FactoryInterface;
 // From `charcoal-core`
 use Charcoal\Model\AbstractModel;
 
+// From `charcoal-translation`
+use Charcoal\Translator\Translator;
+
 // Local namespace (`charcoal-object`) dependencies
 use Charcoal\Object\ContentInterface;
 use Charcoal\Object\RevisionableInterface;
@@ -31,19 +34,19 @@ class Content extends AbstractModel implements
 
     /**
      * Objects are active by default
-     * @var boolean $Active
+     * @var boolean
      */
     private $active = true;
 
     /**
      * The position is used for ordering lists
-     * @var integer $Position
+     * @var integer
      */
     private $position = 0;
 
     /**
      * Object creation date (set automatically on save)
-     * @var DateTime $Created
+     * @var DateTimeInterface
      */
     private $created;
 
@@ -54,7 +57,7 @@ class Content extends AbstractModel implements
 
     /**
      * Object last modified date (set automatically on save and update)
-     * @var DateTime $LastModified
+     * @var DateTimeInterface
      */
     private $lastModified;
 
@@ -64,9 +67,14 @@ class Content extends AbstractModel implements
     private $lastModifiedBy;
 
     /**
-     * @var FactoryInterface $modelFactory
+     * @var FactoryInterface
      */
     private $modelFactory;
+
+    /**
+     * @var Translator
+     */
+    private $translator;
 
     /**
      * Dependencies
@@ -77,6 +85,7 @@ class Content extends AbstractModel implements
     {
         parent::setDependencies($container);
 
+        $this->setTranslator($container['translator']);
         $this->setModelFactory($container['model/factory']);
     }
 
@@ -276,5 +285,22 @@ class Content extends AbstractModel implements
         $this->setLastModified('now');
 
         return true;
+    }
+
+    /**
+     * @param Translator $translator The translator service.
+     * @return void
+     */
+    private function setTranslator(Translator $translator)
+    {
+        $this->translator = $translator;
+    }
+
+    /**
+     * @return Translator
+     */
+    protected function translator()
+    {
+        return $this->translator;
     }
 }

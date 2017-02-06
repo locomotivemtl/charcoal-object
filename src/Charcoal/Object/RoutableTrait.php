@@ -10,7 +10,7 @@ use UnexpectedValueException;
 use Charcoal\Loader\CollectionLoader;
 
 // From 'charcoal-translation'
-use Charcoal\Translation\TranslationString;
+use Charcoal\Translator\Translation;
 use Charcoal\Translation\TranslationConfig;
 
 // From 'charcoal-view'
@@ -31,7 +31,7 @@ trait RoutableTrait
     /**
      * The object's route.
      *
-     * @var TranslationString|string|null
+     * @var \Charcoal\Translator\Translation|null
      */
     protected $slug;
 
@@ -48,21 +48,21 @@ trait RoutableTrait
     /**
      * The object's route pattern.
      *
-     * @var TranslationString|string|null
+     * @var \Charcoal\Translator\Translation|null
      */
     private $slugPattern = '';
 
     /**
      * A prefix for the object's route.
      *
-     * @var TranslationString|string|null
+     * @var \Charcoal\Translator\Translation|null
      */
     private $slugPrefix = '';
 
     /**
      * A suffix for the object's route.
      *
-     * @var TranslationString|string|null
+     * @var \Charcoal\Translator\Translation|null
      */
     private $slugSuffix = '';
 
@@ -91,12 +91,7 @@ trait RoutableTrait
      */
     public function setSlugPattern($pattern)
     {
-        if (TranslationString::isTranslatable($pattern)) {
-            $this->slugPattern = new TranslationString($pattern);
-        } else {
-            $this->slugPattern = null;
-        }
-
+        $this->slugPattern = $this->translator()->translation($pattern);
         return $this;
     }
 
@@ -104,7 +99,7 @@ trait RoutableTrait
      * Retrieve the object's URL slug pattern.
      *
      * @throws Exception If a slug pattern is not defined.
-     * @return TranslationString|null
+     * @return \Charcoal\Translator\Translation|null
      */
     public function slugPattern()
     {
@@ -128,7 +123,7 @@ trait RoutableTrait
     /**
      * Retrieve route prefix for the object's URL slug pattern.
      *
-     * @return TranslationString|null
+     * @return \Charcoal\Translator\Translation|null
      */
     public function slugPrefix()
     {
@@ -136,11 +131,7 @@ trait RoutableTrait
             $metadata = $this->metadata();
 
             if (isset($metadata['routable']['prefix'])) {
-                $affix = $metadata['routable']['prefix'];
-
-                if (TranslationString::isTranslatable($affix)) {
-                    $this->slugPrefix = new TranslationString($affix);
-                }
+                $this->slugPrefix = $this->translator()->translation($metadata['routable']['prefix']);
             }
         }
 
@@ -150,7 +141,7 @@ trait RoutableTrait
     /**
      * Retrieve route suffix for the object's URL slug pattern.
      *
-     * @return TranslationString|null
+     * @return \Charcoal\Translator\Translation|null
      */
     public function slugSuffix()
     {
@@ -158,11 +149,7 @@ trait RoutableTrait
             $metadata = $this->metadata();
 
             if (isset($metadata['routable']['suffix'])) {
-                $affix = $metadata['routable']['suffix'];
-
-                if (TranslationString::isTranslatable($affix)) {
-                    $this->slugSuffix = new TranslationString($affix);
-                }
+                $this->slugSuffix = $this->translator()->translation($metadata['routable']['suffix']);
             }
         }
 
@@ -197,10 +184,11 @@ trait RoutableTrait
      */
     public function setSlug($slug)
     {
-        if (TranslationString::isTranslatable($slug)) {
-            $this->slug = new TranslationString($slug);
+        $slug = $this->translator()->translation($slug);
+        if ($slug != null) {
+            $this->slug = $slug;
 
-            $values = $this->slug->all();
+            $values = $this->slug->data();
             foreach ($values as $lang => $val) {
                 $this->slug[$lang] = $this->slugify($val);
             }
@@ -219,7 +207,7 @@ trait RoutableTrait
     /**
      * Retrieve the object's URL slug.
      *
-     * @return TranslationString|null
+     * @return \Charcoal\Translator\Translation|null
      */
     public function slug()
     {
@@ -230,7 +218,7 @@ trait RoutableTrait
      * Generate a URL slug from the object's URL slug pattern.
      *
      * @throws UnexpectedValueException If the slug is empty.
-     * @return TranslationString
+     * @return \Charcoal\Translator\Translation
      */
     public function generateSlug()
     {
@@ -238,7 +226,7 @@ trait RoutableTrait
         $languages  = $translator->availableLanguages();
         $patterns   = $this->slugPattern();
         $curSlug    = $this->slug();
-        $newSlug    = new TranslationString();
+        $newSlug    = [];
 
         $origLang = $translator->currentLanguage();
         foreach ($languages as $lang) {
@@ -274,7 +262,7 @@ trait RoutableTrait
         }
         $translator->setCurrentLanguage($origLang);
 
-        return $newSlug;
+        return $this->translator()->translation($newSlug);
     }
 
     /**
@@ -381,7 +369,7 @@ trait RoutableTrait
             $slug = $this->generateSlug();
         }
 
-        if ($slug instanceof TranslationString) {
+        if ($slug instanceof Translation) {
             $slugs = $slug->all();
         }
 
@@ -447,7 +435,7 @@ trait RoutableTrait
         $translator = TranslationConfig::instance();
 
         if ($lang === null) {
-            $lang = $translator->currentLanguage();
+            $lang = $this->translator()->getLocale();
         } elseif (!$translator->hasLanguage($lang)) {
             throw new InvalidArgumentException(
                 sprintf(
@@ -507,7 +495,7 @@ trait RoutableTrait
      * Retrieve the object's URI.
      *
      * @param  string|null $lang If object is multilingual, return the object route for the specified locale.
-     * @return TranslationString|string
+     * @return string
      */
     public function url($lang = null)
     {
@@ -518,7 +506,7 @@ trait RoutableTrait
 
         $slug = $this->slug();
 
-        if ($slug instanceof TranslationString && $lang) {
+        if ($slug instanceof Translation && $lang) {
             return $slug->val($lang);
         }
 
@@ -715,4 +703,9 @@ trait RoutableTrait
      * @return mixed
      */
     abstract public function templateIdent();
+
+    /**
+     * @return \Charcoal\Translator\Translator
+     */
+    abstract protected function translator();
 }

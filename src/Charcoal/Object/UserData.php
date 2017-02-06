@@ -7,6 +7,9 @@ use DateTimeInterface;
 use Exception;
 use InvalidArgumentException;
 
+// From `pimple/pimple`
+use Pimple\Container;
+
 // From `charcoal-core`
 use Charcoal\Model\AbstractModel;
 

@@ -54,7 +54,7 @@ class HierarchicalClass implements
      * @param array|\ArrayAccess $data The model data.
      * @return ModelInterface Chainable
      */
-    public function setData($data)
+    public function setData(array $data)
     {
         return null;
     }

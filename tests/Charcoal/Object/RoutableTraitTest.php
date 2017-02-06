@@ -2,9 +2,16 @@
 
 namespace Charcoal\Tests\Object;
 
+use PHPUnit_Framework_TestCase;
+
 use DateTime;
 
 use Psr\Log\NullLogger;
+
+use Symfony\Component\Translation\MessageSelector;
+
+use Charcoal\Translator\Translator;
+use Charcoal\Translator\LanguageManager;
 
 use Charcoal\Model\Service\MetadataLoader;
 
@@ -13,9 +20,27 @@ use Charcoal\Object\RoutableTrait as RoutableTrait;
 /**
  *
  */
-class RoutableTraitTest extends \PHPUnit_Framework_TestCase
+class RoutableTraitTest extends PHPUnit_Framework_TestCase
 {
     public $obj;
+
+    private function translator()
+    {
+        return new Translator([
+            'locale'=>'en',
+            'message_selector'=>new MessageSelector(),
+            'cache_dir' => null,
+            'debug' => false,
+            'language_manager' => new LanguageManager([
+                'languages' => [
+                    'en'=>['locale'=>'en-US'],
+                    'fr'=>['locale'=>'fr-CA']
+                ],
+                'default_language'=>'en',
+                'fallback_languages'=>['en']
+            ])
+        ]);
+    }
 
     /**
      * Create mock object from trait.
@@ -31,6 +56,10 @@ class RoutableTraitTest extends \PHPUnit_Framework_TestCase
             true,
             [ 'metadata' ]
         );
+
+        $this->obj->expects($this->any())
+            ->method('translator')
+            ->willReturn($this->translator());
     }
 
     public function testSlugPattern()

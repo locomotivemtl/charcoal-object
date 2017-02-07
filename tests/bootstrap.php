@@ -1,5 +1,7 @@
 <?php
 
+use Psr\Log\NullLogger;
+use Cache\Adapter\Void\VoidCachePool;
 use Pimple\Container;
 
 // Composer autoloader for Charcoal's psr4-compliant Unit Tests
@@ -17,6 +19,6 @@ $GLOBALS['container'] = new Container([
             ]
         ]
     ],
-    'cache'  => new \Stash\Pool(),
-    'logger' => new \Psr\Log\NullLogger()
+    'cache'  => new VoidCachePool(),
+    'logger' => new NullLogger()
 ]);

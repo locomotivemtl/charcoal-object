@@ -11,7 +11,7 @@ use Psr\Log\NullLogger;
 use Symfony\Component\Translation\MessageSelector;
 
 use Charcoal\Translator\Translator;
-use Charcoal\Translator\LanguageManager;
+use Charcoal\Translator\LocalesManager;
 
 use Charcoal\Model\Service\MetadataLoader;
 
@@ -27,12 +27,8 @@ class RoutableTraitTest extends PHPUnit_Framework_TestCase
     private function translator()
     {
         return new Translator([
-            'locale'=>'en',
-            'message_selector'=>new MessageSelector(),
-            'cache_dir' => null,
-            'debug' => false,
-            'language_manager' => new LanguageManager([
-                'languages' => [
+            'manager' => new LocalesManager([
+                'locales' => [
                     'en'=>['locale'=>'en-US'],
                     'fr'=>['locale'=>'fr-CA']
                 ],

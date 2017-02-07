@@ -14,7 +14,7 @@ use Pimple\Container;
 use Charcoal\Model\AbstractModel;
 
 // From `charcoal-translation`
-use Charcoal\Translator\Translator;
+use Charcoal\Translator\TranslatorAwareTrait;
 
 // Local namespace (`charcoal-object`) dependency
 use Charcoal\Object\UserDataInterface;
@@ -25,6 +25,8 @@ use Charcoal\Object\UserDataInterface;
 class UserData extends AbstractModel implements
     UserDataInterface
 {
+    use TranslatorAwareTrait;
+
     /**
      * Client IP address of the end-user.
      *
@@ -52,11 +54,6 @@ class UserData extends AbstractModel implements
      * @var DateTimeInterface|null
      */
     private $ts;
-
-    /**
-     * @var Translator
-     */
-    private $translator;
 
     /**
      * Dependencies
@@ -262,22 +259,5 @@ class UserData extends AbstractModel implements
         }
 
         return $result;
-    }
-
-    /**
-     * @param Translator $translator The translator service.
-     * @return void
-     */
-    private function setTranslator(Translator $translator)
-    {
-        $this->translator = $translator;
-    }
-
-    /**
-     * @return Translator
-     */
-    protected function translator()
-    {
-        return $this->translator;
     }
 }

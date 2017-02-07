@@ -16,7 +16,7 @@ use Charcoal\Factory\FactoryInterface;
 use Charcoal\Model\AbstractModel;
 
 // From `charcoal-translation`
-use Charcoal\Translator\Translator;
+use Charcoal\Translator\TranslatorAwareTrait;
 
 // Local namespace (`charcoal-object`) dependencies
 use Charcoal\Object\ContentInterface;
@@ -31,6 +31,7 @@ class Content extends AbstractModel implements
     RevisionableInterface
 {
     use RevisionableTrait;
+    use TranslatorAwareTrait;
 
     /**
      * Objects are active by default
@@ -285,22 +286,5 @@ class Content extends AbstractModel implements
         $this->setLastModified('now');
 
         return true;
-    }
-
-    /**
-     * @param Translator $translator The translator service.
-     * @return void
-     */
-    private function setTranslator(Translator $translator)
-    {
-        $this->translator = $translator;
-    }
-
-    /**
-     * @return Translator
-     */
-    protected function translator()
-    {
-        return $this->translator;
     }
 }

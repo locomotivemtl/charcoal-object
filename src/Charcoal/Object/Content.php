@@ -73,11 +73,6 @@ class Content extends AbstractModel implements
     private $modelFactory;
 
     /**
-     * @var Translator
-     */
-    private $translator;
-
-    /**
      * Dependencies
      * @param Container $container DI Container.
      * @return void

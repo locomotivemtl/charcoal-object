@@ -53,13 +53,11 @@ class UserDataTest extends \PHPUnit_Framework_TestCase
     public function testSetData()
     {
         $obj = $this->obj;
-        $ret = $obj->setData(
-            [
-            'ip'=>'192.168.1.1',
-            'lang'=>'fr',
-            'ts'=>'2015-01-01 15:05:20'
-            ]
-        );
+        $ret = $obj->setData([
+            'ip'   => '192.168.1.1',
+            'lang' => 'fr',
+            'ts'   => '2015-01-01 15:05:20'
+        ]);
         $this->assertSame($ret, $obj);
         $this->assertEquals(ip2long('192.168.1.1'), $obj->ip());
         $this->assertEquals('fr', $obj->lang());
@@ -103,15 +101,15 @@ class UserDataTest extends \PHPUnit_Framework_TestCase
 
     public function testPreSave()
     {
-        $obj = $this->obj
-        ;
+        $obj = $this->obj;
+
         $this->assertSame(null, $obj->ip());
         $this->assertSame(null, $obj->origin());
         $this->assertSame(null, $obj->lang());
         $this->assertSame(null, $obj->ts());
 
         $obj->preSave();
-
+        error_log('❯ '.var_export($obj->resolveOrigin(), true));
         $this->assertSame(null, $obj->ip());
         $this->assertSame($obj->resolveOrigin(), $obj->origin());
         $this->assertSame(null, $obj->lang());

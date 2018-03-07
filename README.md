@@ -18,6 +18,7 @@ Object definition (Content and UserData), behaviors and tools.
         -   [Publishable](#publishable)
         -   [Revisionable](#revisionable)
         -   [Routable](#routable)
+        -   [SoftDeleteable](#softdeleteable)
     -   [Helpers](#helpers)
         -   [ObjectDraft](#objectdraft)
         -   [ObjectRevision](#objectrevision)
@@ -57,7 +58,7 @@ The **Content** base class should be used for all objects which can be "managed"
 
 **API**
 
--   ` setActive($active)`
+-   `setActive($active)`
 -   `active()`
 -   `setPosition($position)`
 -   `position()`
@@ -128,6 +129,7 @@ The **UserData** class should be used for all objects that are expected to be en
 -   [Publishable](#publishable)
 -   [Revisionable](#revisionable)
 -   [Routable](#routable)
+-   [SoftDeleteable](#softdeleteable)
 
 ### Archivable
 
@@ -247,6 +249,43 @@ _The revisionable behavior does not implement any properties as all logic & data
 ### Routable
 
 _The routable behavior is not yet documented. It is still under heavy development._
+
+### SoftDeleteable
+
+_The mixin allows "soft deleting" objects by marking them as deleted with a timestamp and author without explicitly removing them from the database._
+
+This feature overrides the default behaviour of Charcoal models—as defined by [`StorableTrait::delete()`](https://github.com/locomotivemtl/charcoal-core/blob/0.3/src/Charcoal/Source/StorableTrait.php#L331-L372).
+
+**Interface**
+
+-   `setDeletedDate($deleted)`
+-   `deletedDate()`
+-   `setDeletedBy($deleter)`
+-   `deletedBy()`
+-   `isTrashed()`
+
+**Trait**
+
+-   `softDeletableProperties()`
+-   `isForceDeleting()`
+-   `isRestoring()`
+-   `delete()`
+-   `forceDelete()`
+-   `preDelete()`
+-   `restore()`
+-   `preRestore()`
+-   `postRestore()`
+
+**Properties (metadata)**
+
+| Property           | Type         | Default    | Description |
+| ------------------ | ------------ | ---------- | ----------- |
+| **deleted_date**   | `date-time`  | `null` [1] | …           |
+| **deleted_by**     | `string`     | `null`     | …           |
+
+<small>[1] Auto-generated upon `SoftDeleteableTrait::delete()`</small><br>
+
+> Default metadata is defined in `metadata/charcoal/object/soft-deletable-interface.json`.
 
 ## Helpers
 

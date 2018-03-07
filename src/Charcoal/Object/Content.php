@@ -176,13 +176,19 @@ class Content extends AbstractModel implements
     }
 
     /**
-     * StorableTrait > preSave(): Called automatically before saving the object to source.
-     * For content object, set the `created` and `lastModified` properties automatically
+     * Event called before creating the object.
+     *
+     * For the Content object:
+     * - Touch the "created" and "last_modified" properties automatically
+     *
      * @return boolean
      */
     protected function preSave()
     {
-        parent::preSave();
+        $result = parent::preSave();
+        if ($result !== true) {
+            return false;
+        }
 
         // Timestampable properties
         $this->setCreated('now');
@@ -192,22 +198,27 @@ class Content extends AbstractModel implements
     }
 
     /**
-     * StorableTrait > preUpdate(): Called automatically before updating the object to source.
-     * For content object, set the `lastModified` property automatically.
+     * Event called before updating the object.
      *
-     * @param array $properties The properties (ident) set for update.
+     * For the Content object:
+     * - Touch the "last_modified" property automatically
+     *
+     * @param  array $properties Optional. The list of properties to update.
      * @return boolean
      */
     protected function preUpdate(array $properties = null)
     {
-        parent::preUpdate($properties);
+        $result = parent::preUpdate($properties);
+        if ($result !== true) {
+            return false;
+        }
 
         // Content is revisionable
         if ($this->revisionEnabled()) {
             $this->generateRevision();
         }
 
-        // Timestampable propertiees
+        // Timestampable properties
         $this->setLastModified('now');
 
         return true;

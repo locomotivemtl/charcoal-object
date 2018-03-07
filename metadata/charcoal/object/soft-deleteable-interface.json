@@ -1,0 +1,24 @@
+{
+    "properties": {
+        "deleted_date": {
+            "type": "date-time",
+            "input_type": "charcoal/admin/property/input/readonly",
+            "label": {
+                "en": "Trashed Date",
+                "fr": "Date mise à la corbeille"
+            },
+            "description": {
+                "en": "The deletion timestamp should be set automatically when soft deleting this object in storage.",
+                "fr": "La date de suppression devrait être enregistrée automatiquement lors de la mise en corbeille de l'objet."
+            }
+        },
+        "deleted_by": {
+            "type": "string",
+            "input_type": "charcoal/admin/property/input/readonly",
+            "label": {
+                "en": "Trashed by",
+                "fr": "Mise à la corbeille par"
+            }
+        }
+    }
+}

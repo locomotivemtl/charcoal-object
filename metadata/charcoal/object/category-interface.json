@@ -18,7 +18,7 @@
         },
         "num_category_items": {
             "type": "number",
-            "read_only": true,
+            "readOnly": true,
             "storable": false,
             "label": {
                 "en": "# items",

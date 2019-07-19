@@ -1,6 +1,6 @@
 {
     "admin": {
-        "form_groups": {
+        "formGroups": {
             "object-revisions": {
                 "_@deprecated": "Use charcoal/object/revisionable/object-revisions",
                 "priority": 90,

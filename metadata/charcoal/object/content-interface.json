@@ -22,7 +22,7 @@
         "required_acl_permissions": {
             "type": "string",
             "multiple": true,
-            "allow_null": true,
+            "allowNull": true,
             "label": {
                 "en": "Required ACL permissions",
                 "fr": "Permissions requise (ACL)"

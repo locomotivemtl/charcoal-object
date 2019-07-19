@@ -2,7 +2,7 @@
     "properties": {
         "created": {
             "type": "date-time",
-            "input_type": "charcoal/admin/property/input/readonly",
+            "inputType": "charcoal/admin/property/input/readonly",
             "label": {
                 "en": "Creation date",
                 "fr": "Date de création"
@@ -12,9 +12,9 @@
                 "fr": "La date de création devrait être enregistrée automatiquement lors de la première sauvegarde de l'objet."
             }
         },
-        "last_modified": {
+        "lastModified": {
             "type": "date-time",
-            "input_type": "charcoal/admin/property/input/readonly",
+            "inputType": "charcoal/admin/property/input/readonly",
             "label": {
                 "en": "Last modified",
                 "fr": "Dernière modification"

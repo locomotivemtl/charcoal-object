@@ -16,7 +16,7 @@
             "type": "number",
             "label": "Position"
         },
-        "num_category_items": {
+        "numCategoryItems": {
             "type": "number",
             "readOnly": true,
             "storable": false,

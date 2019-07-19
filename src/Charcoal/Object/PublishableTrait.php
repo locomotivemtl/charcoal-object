@@ -78,7 +78,7 @@ trait PublishableTrait
      *
      * @return DateTimeInterface|null
      */
-    public function publishDate()
+    public function getPublishDate()
     {
         return $this->publishDate;
     }
@@ -125,7 +125,7 @@ trait PublishableTrait
      *
      * @return DateTimeInterface|null
      */
-    public function expiryDate()
+    public function getExpiryDate()
     {
         return $this->expiryDate;
     }

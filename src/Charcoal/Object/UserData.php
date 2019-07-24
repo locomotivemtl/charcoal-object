@@ -187,7 +187,7 @@ class UserData extends AbstractModel implements
      *
      * @return string
      */
-    public function setOrigin()
+    public function getOrigin()
     {
         return $this->origin;
     }

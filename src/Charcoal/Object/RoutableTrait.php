@@ -310,7 +310,7 @@ trait RoutableTrait
 
         if (is_callable($method)) {
             $value = call_user_func($method);
-            /** @see \Charcoal\Config\AbstractEntity::offsetGet() */
+        /** @see \Charcoal\Config\AbstractEntity::offsetGet() */
         } elseif (isset($this[$token])) {
             $value = $this[$token];
         } else {
@@ -520,7 +520,7 @@ trait RoutableTrait
             return $slug;
         }
 
-        $url = (string)$this->getLatestObjectRoute($lang)->getSlug();
+        $url = (string)$this->getLatestObjectRoute($lang)['slug'];
         return $url;
     }
 

@@ -31,21 +31,21 @@ class ObjectSchedule extends AbstractModel implements ObjectScheduleInterface
      *
      * @var FactoryInterface
      */
-    private $modelFactory;
+    protected $modelFactory;
 
     /**
      * The object type of the scheduled object (required).
      *
      * @var string
      */
-    private $targetType;
+    protected $targetType;
 
     /**
      * The object ID of the scheduled object (required).
      *
      * @var mixed
      */
-    private $targetId;
+    protected $targetId;
 
     /**
      * When the item should be processed.
@@ -55,28 +55,28 @@ class ObjectSchedule extends AbstractModel implements ObjectScheduleInterface
      *
      * @var DateTimeInterface $scheduledDate
      */
-    private $scheduledDate;
+    protected $scheduledDate;
 
     /**
      * The property identifier of the scheduled object (required).
      *
      * @var array
      */
-    private $dataDiff = [];
+    protected $dataDiff = [];
 
     /**
      * Whether the item has been processed.
      *
      * @var boolean $processed
      */
-    private $processed = false;
+    protected $processed = false;
 
     /**
      * When the item was processed.
      *
      * @var DateTimeInterface $processedDate
      */
-    private $processedDate;
+    protected $processedDate;
 
     /**
      * Set an object model factory.
@@ -130,16 +130,6 @@ class ObjectSchedule extends AbstractModel implements ObjectScheduleInterface
     }
 
     /**
-     * Retrieve the scheduled object's type.
-     *
-     * @return string
-     */
-    public function targetType()
-    {
-        return $this->targetType;
-    }
-
-    /**
      * Set the scheduled object's ID.
      *
      * @param mixed $targetId The object ID.
@@ -150,16 +140,6 @@ class ObjectSchedule extends AbstractModel implements ObjectScheduleInterface
         $this->targetId = $targetId;
 
         return $this;
-    }
-
-    /**
-     * Retrieve the scheduled object's ID.
-     *
-     * @return mixed
-     */
-    public function targetId()
-    {
-        return $this->targetId;
     }
 
     /**
@@ -179,14 +159,6 @@ class ObjectSchedule extends AbstractModel implements ObjectScheduleInterface
     }
 
     /**
-     * @return array
-     */
-    public function dataDiff()
-    {
-        return $this->dataDiff;
-    }
-
-    /**
      * Set the schedule's processed status.
      *
      * @param boolean $processed Whether the schedule has been processed.
@@ -197,16 +169,6 @@ class ObjectSchedule extends AbstractModel implements ObjectScheduleInterface
         $this->processed = !!$processed;
 
         return $this;
-    }
-
-    /**
-     * Determine if the schedule has been processed.
-     *
-     * @return boolean
-     */
-    public function processed()
-    {
-        return $this->processed;
     }
 
     /**
@@ -247,16 +209,6 @@ class ObjectSchedule extends AbstractModel implements ObjectScheduleInterface
     }
 
     /**
-     * Retrieve the date/time the item should be processed at.
-     *
-     * @return null|DateTimeInterface
-     */
-    public function scheduledDate()
-    {
-        return $this->scheduledDate;
-    }
-
-    /**
      * Set the date/time the item was processed at.
      *
      * @param  null|string|DateTimeInterface $ts A date/time string or object.
@@ -294,16 +246,6 @@ class ObjectSchedule extends AbstractModel implements ObjectScheduleInterface
     }
 
     /**
-     * Retrieve the date/time the item was processed at.
-     *
-     * @return null|DateTimeInterface
-     */
-    public function processedDate()
-    {
-        return $this->processedDate;
-    }
-
-    /**
      * Hook called before saving the item.
      *
      * Presets the item as _to-be_ processed and queued now.
@@ -332,41 +274,40 @@ class ObjectSchedule extends AbstractModel implements ObjectScheduleInterface
         callable $successCallback = null,
         callable $failureCallback = null
     ) {
-
-        if ($this->processed() === true) {
+        if ($this['processed'] === true) {
             // Do not process twice, ever.
             return null;
         }
 
-        if ($this->targetType() === null) {
+        if ($this['targetType'] === null) {
             $this->logger->error('Can not process object schedule: no object type defined.');
             return false;
         }
 
-        if ($this->targetId() === null) {
+        if ($this['targetId'] === null) {
             $this->logger->error(sprintf(
                 'Can not process object schedule: no object "%s" ID defined.',
-                $this->targetType()
+                $this['targetType']
             ));
             return false;
         }
 
-        if (empty($this->dataDiff())) {
+        if (empty($this['dataDiff'])) {
             $this->logger->error('Can not process object schedule: no changes (diff) defined.');
             return false;
         }
 
-        $obj = $this->modelFactory()->create($this->targetType());
-        $obj->load($this->targetId());
-        if (!$obj->id()) {
+        $obj = $this->modelFactory()->create($this['targetType']);
+        $obj->load($this['targetId']);
+        if (!$obj['id']) {
             $this->logger->error(sprintf(
                 'Can not load "%s" object %s',
-                $this->targetType(),
-                $this->targetId()
+                $this['targetType'],
+                $this['targetId']
             ));
         }
-        $obj->setData($this->dataDiff());
-        $update = $obj->update(array_keys($this->dataDiff()));
+        $obj->setData($this['dataDiff']);
+        $update = $obj->update(array_keys($this['dataDiff']));
 
         if ($update) {
             $this->setProcessed(true);

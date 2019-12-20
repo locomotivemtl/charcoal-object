@@ -39,46 +39,46 @@ class ObjectRevision extends AbstractModel implements ObjectRevisionInterface
      * Object type of this revision (required)
      * @var string $targetType
      */
-    private $targetType;
+    protected $targetType;
 
     /**
      * Object ID of this revision (required)
      * @var mixed $objectId
      */
-    private $targetId;
+    protected $targetId;
 
     /**
      * Revision number. Sequential integer for each object's ID. (required)
      * @var integer $revNum
      */
-    private $revNum;
+    protected $revNum;
 
     /**
      * Timestamp; when this revision was created
      * @var DateTimeInterface|null $revTs
      */
-    private $revTs;
+    protected $revTs;
 
     /**
      * The (admin) user that was
      * @var string|null $revUser
      */
-    private $revUser;
+    protected $revUser;
 
     /**
      * @var array $dataPrev
      */
-    private $dataPrev;
+    protected $dataPrev;
 
     /**
      * @var array $dataObj
      */
-    private $dataObj;
+    protected $dataObj;
 
     /**
      * @var array $dataDiff
      */
-    private $dataDiff;
+    protected $dataDiff;
 
     /**
      * @param  Container $container DI Container.
@@ -108,14 +108,6 @@ class ObjectRevision extends AbstractModel implements ObjectRevisionInterface
     }
 
     /**
-     * @return string
-     */
-    public function getTargetType()
-    {
-        return $this->targetType;
-    }
-
-    /**
      * @param  mixed $targetId The object ID.
      * @return ObjectRevision Chainable
      */
@@ -123,14 +115,6 @@ class ObjectRevision extends AbstractModel implements ObjectRevisionInterface
     {
         $this->targetId = $targetId;
         return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getTargetId()
-    {
-        return $this->targetId;
     }
 
     /**
@@ -147,14 +131,6 @@ class ObjectRevision extends AbstractModel implements ObjectRevisionInterface
         }
         $this->revNum = intval($revNum);
         return $this;
-    }
-
-    /**
-     * @return integer
-     */
-    public function getRevNum()
-    {
-        return $this->revNum;
     }
 
     /**
@@ -181,14 +157,6 @@ class ObjectRevision extends AbstractModel implements ObjectRevisionInterface
     }
 
     /**
-     * @return DateTimeInterface|null
-     */
-    public function getRevTs()
-    {
-        return $this->revTs;
-    }
-
-    /**
      * @param  string $revUser The revision user ident.
      * @throws InvalidArgumentException If the revision user parameter is not a string.
      * @return ObjectRevision Chainable
@@ -209,14 +177,6 @@ class ObjectRevision extends AbstractModel implements ObjectRevisionInterface
     }
 
     /**
-     * @return string
-     */
-    public function getRevUser()
-    {
-        return $this->revUser;
-    }
-
-    /**
      * @param  string|array|null $data The previous revision data.
      * @return ObjectRevision Chainable
      */
@@ -230,14 +190,6 @@ class ObjectRevision extends AbstractModel implements ObjectRevisionInterface
         }
         $this->dataPrev = $data;
         return $this;
-    }
-
-    /**
-     * @return array
-     */
-    public function getDataPrev()
-    {
-        return $this->dataPrev;
     }
 
     /**
@@ -257,14 +209,6 @@ class ObjectRevision extends AbstractModel implements ObjectRevisionInterface
     }
 
     /**
-     * @return array
-     */
-    public function getDataObj()
-    {
-        return $this->dataObj;
-    }
-
-    /**
      * @param  array|string $data The data diff.
      * @return ObjectRevision
      */
@@ -281,14 +225,6 @@ class ObjectRevision extends AbstractModel implements ObjectRevisionInterface
     }
 
     /**
-     * @return array
-     */
-    public function getDataDiff()
-    {
-        return $this->dataDiff;
-    }
-
-    /**
      * Create a new revision from an object
      *
      * 1. Load the last revision
@@ -302,9 +238,9 @@ class ObjectRevision extends AbstractModel implements ObjectRevisionInterface
     {
         $prevRev = $this->lastObjectRevision($obj);
 
-        $this->setTargetType($obj->objType());
-        $this->setTargetId($obj->id());
-        $this->setRevNum($prevRev->getRevNum() + 1);
+        $this->setTargetType($obj['objType']);
+        $this->setTargetId($obj['id']);
+        $this->setRevNum(($prevRev['revNum'] + 1));
         $this->setRevTs('now');
 
         if (isset($obj['lastModifiedBy'])) {
@@ -312,7 +248,7 @@ class ObjectRevision extends AbstractModel implements ObjectRevisionInterface
         }
 
         $this->setDataObj($obj->data());
-        $this->setDataPrev($prevRev->getDataObj());
+        $this->setDataPrev($prevRev['dataObj']);
 
         $diff = $this->createDiff();
         $this->setDataDiff($diff);
@@ -328,10 +264,10 @@ class ObjectRevision extends AbstractModel implements ObjectRevisionInterface
     public function createDiff(array $dataPrev = null, array $dataObj = null)
     {
         if ($dataPrev === null) {
-            $dataPrev = $this->getDataPrev();
+            $dataPrev = $this['dataPrev'];
         }
         if ($dataObj === null) {
-            $dataObj = $this->getDataObj();
+            $dataObj = $this['dataObj'];
         }
         $dataDiff = $this->recursiveDiff($dataPrev, $dataObj);
         return $dataDiff;
@@ -400,8 +336,8 @@ class ObjectRevision extends AbstractModel implements ObjectRevisionInterface
             $this->source()->table()
         );
         $rev->loadFromQuery($sql, [
-            'target_type' => $obj->objType(),
-            'target_id'   => $obj->id(),
+            'target_type' => $obj['objType'],
+            'target_id'   => $obj['id'],
         ]);
 
         return $rev;
@@ -427,8 +363,8 @@ class ObjectRevision extends AbstractModel implements ObjectRevisionInterface
             $this->source()->table()
         );
         $rev->loadFromQuery($sql, [
-            'target_type' => $obj->objType(),
-            'target_id'   => $obj->id(),
+            'target_type' => $obj['objType'],
+            'target_id'   => $obj['id'],
             'rev_num'     => intval($revNum),
         ]);
 

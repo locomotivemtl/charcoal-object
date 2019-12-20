@@ -2,7 +2,7 @@
     "properties": {
         "master": {
             "type": "object",
-            "allow_null": true,
+            "allowNull": true,
             "label": "Parent"
         }
     }

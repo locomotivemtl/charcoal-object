@@ -3,13 +3,14 @@
         "lists": {
             "default": {
                 "properties": [
-                    "rev_num",
-                    "rev_ts",
-                    "rev_user"
+                    "revNum",
+                    "revTs",
+                    "revUser"
                 ]
             }
         },
-        "default_list": "default",
+
+        "defaultList": "default",
 
         "forms": {
             "default": {
@@ -18,7 +19,7 @@
                 }
             }
         },
-        "default_form": "default",
+        "defaultForm": "default",
 
         "dashboards": {
             "admin.edit": {
@@ -29,8 +30,8 @@
                 "widgets": {
                     "form": {
                         "type": "charcoal/admin/widget/object-form",
-                        "form_ident": "default",
-                        "target_type": "charcoal/object/object-revision"
+                        "formIdent": "default",
+                        "targetType": "charcoal/object/object-revision"
                     }
                 },
                 "layout": {
@@ -47,8 +48,8 @@
                 "widgets": {
                     "form": {
                         "type": "charcoal/admin/widget/table",
-                        "collection_ident": "default",
-                        "target_type": "charcoal/object/object-revision"
+                        "collectionIdent": "default",
+                        "targetType": "charcoal/object/object-revision"
                     }
                 },
                 "layout": {
@@ -58,8 +59,9 @@
                 }
             }
         },
-        "default_create_dashboard": "admin.edit",
-        "default_edit_dashboard": "admin.edit",
-        "default_collection_dashboard": "admin.table"
+
+        "defaultCreateDashboard": "admin.edit",
+        "defaultEditDashboard": "admin.edit",
+        "defaultCollectionDashboard": "admin.table"
     }
 }

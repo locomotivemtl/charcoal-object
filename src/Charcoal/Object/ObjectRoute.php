@@ -184,8 +184,8 @@ class ObjectRoute extends AbstractModel implements
             ->reset()
             ->setModel($proto)
             ->addFilter('active', true)
-            ->addFilter('slug', $this->getSlug())
-            ->addFilter('lang', $this->getLang())
+            ->addFilter('slug', $this['slug'])
+            ->addFilter('lang', $this['lang'])
             ->addOrder('creation_date', 'desc')
             ->setPage(1)
             ->setNumPerPage(1);
@@ -195,17 +195,17 @@ class ObjectRoute extends AbstractModel implements
             return true;
         }
         $obj = reset($routes);
-        if (!$obj->id()) {
+        if (!$obj['id']) {
             return true;
         }
-        if ($obj->id() === $this->id()) {
+        if ($obj['id'] === $this->id) {
             return true;
         }
-        if ($obj->getRouteObjId() === $this->getRouteObjId() &&
-            $obj->getRouteObjType() === $this->getRouteObjType() &&
-            $obj->getLang() === $this->getLang()
+        if ($obj['routeObjId'] === $this['routeObjId'] &&
+            $obj['routeObjType'] === $this['routeObjType'] &&
+            $obj['lang'] === $this['lang']
         ) {
-            $this->setId($obj->id());
+            $this->setId($obj['id']);
 
             return true;
         }
@@ -222,7 +222,7 @@ class ObjectRoute extends AbstractModel implements
     {
         if (!$this->isSlugUnique()) {
             if (!$this->originalSlug) {
-                $this->originalSlug = $this->getSlug();
+                $this->originalSlug = $this['slug'];
             }
             $this->slugInc++;
             $this->setSlug($this->originalSlug.'-'.$this->slugInc);
@@ -412,100 +412,12 @@ class ObjectRoute extends AbstractModel implements
     }
 
     /**
-     * Retrieve the object route.
-     *
-     * @return string
-     */
-    public function getSlug()
-    {
-        return $this->slug;
-    }
-
-    /**
-     * Retrieve the locale of the object route.
-     *
-     * @return string
-     */
-    public function getLang()
-    {
-        return $this->lang;
-    }
-
-    /**
-     * Retrieve the route's creation date.
-     *
-     * @return DateTimeInterface|null
-     */
-    public function getCreationDate()
-    {
-        return $this->creationDate;
-    }
-
-    /**
-     * Retrieve the route's last modification date.
-     *
-     * @return DateTimeInterface|null
-     */
-    public function getLastModificationDate()
-    {
-        return $this->lastModificationDate;
-    }
-
-    /**
-     * Retrieve the foreign object type related to this route.
-     *
-     * @return string
-     */
-    public function getRouteObjType()
-    {
-        return $this->routeObjType;
-    }
-
-    /**
-     * Retrieve the foreign object ID related to this route.
-     *
-     * @return string
-     */
-    public function getRouteObjId()
-    {
-        return $this->routeObjId;
-    }
-
-    /**
-     * Retrieve the foreign object's template identifier.
-     *
-     * @return string
-     */
-    public function getRouteTemplate()
-    {
-        return $this->routeTemplate;
-    }
-
-    /**
-     * Retrieve the template's customized options.
-     *
-     * @return array
-     */
-    public function getRouteOptions()
-    {
-        return $this->routeOptions;
-    }
-
-    /**
-     * @return string
-     */
-    public function getRouteOptionsIdent()
-    {
-        return $this->routeOptionsIdent;
-    }
-
-    /**
      * Alias of {@see self::slug()}.
      *
      * @return string
      */
     public function __toString()
     {
-        return (string)$this->slug();
+        return (string)$this['slug'];
     }
 }

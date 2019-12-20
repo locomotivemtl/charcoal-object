@@ -16,20 +16,10 @@ interface ObjectRevisionInterface
     public function setTargetType($targetType);
 
     /**
-     * @return string
-     */
-    public function getTargetType();
-
-    /**
      * @param mixed $targetId The object ID.
      * @return \Charcoal\Object\ObjectRevisionInterface Chainable
      */
     public function setTargetId($targetId);
-
-    /**
-     * @return mixed
-     */
-    public function getTargetId();
 
     /**
      * @param integer $revNum The revision number.
@@ -38,20 +28,10 @@ interface ObjectRevisionInterface
     public function setRevNum($revNum);
 
     /**
-     * @return integer
-     */
-    public function getRevNum();
-
-    /**
      * @param mixed $revTs The revision's timestamp.
      * @return \Charcoal\Object\ObjectRevisionInterface Chainable
      */
     public function setRevTs($revTs);
-
-    /**
-     * @return \DateTimeInterface|null
-     */
-    public function getRevTs();
 
     /**
      * @param string $revUser The revision user ident.
@@ -60,20 +40,10 @@ interface ObjectRevisionInterface
     public function setRevUser($revUser);
 
     /**
-     * @return string
-     */
-    public function getRevUser();
-
-    /**
      * @param array|string $data The previous revision data.
      * @return ObjectRevision
      */
     public function setDataPrev($data);
-
-    /**
-     * @return array
-     */
-    public function getDataPrev();
 
     /**
      * @param array|string $data The current revision (object) data.
@@ -81,21 +51,11 @@ interface ObjectRevisionInterface
      */
     public function setDataObj($data);
 
-    /**
-     * @return array
-     */
-    public function getDataObj();
-
      /**
       * @param array|string $data The data diff.
       * @return ObjectRevision
       */
     public function setDataDiff($data);
-
-    /**
-     * @return array
-     */
-    public function getDataDiff();
 
     /**
      * Create a new revision from an object

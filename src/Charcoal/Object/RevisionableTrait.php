@@ -109,7 +109,7 @@ trait RevisionableTrait
         $rev = $this->createRevisionObject();
 
         $rev->createFromObject($this);
-        if (!empty($rev->getDataDiff())) {
+        if (!empty($rev['dataDiff'])) {
             $rev->save();
         }
 
@@ -185,10 +185,10 @@ trait RevisionableTrait
         }
 
         if (isset($obj['lastModifiedBy'])) {
-            $obj['lastModifiedBy'] = $rev->getRevUser();
+            $obj['lastModifiedBy'] = $rev['revUser'];
         }
 
-        $this->setData($rev->getDataObj());
+        $this->setData($rev['dataObj']);
         $this->update();
 
         return true;

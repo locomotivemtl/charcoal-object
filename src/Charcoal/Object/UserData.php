@@ -34,14 +34,14 @@ class UserData extends AbstractModel implements
      *
      * @var integer|null
      */
-    private $ip;
+    protected $ip;
 
     /**
      * Language of the end-user or source URI.
      *
      * @var string|null
      */
-    private $lang;
+    protected $lang;
 
     /**
      * Source URL or identifier of end-user submission.
@@ -55,7 +55,7 @@ class UserData extends AbstractModel implements
      *
      * @var DateTimeInterface|null
      */
-    private $ts;
+    protected $ts;
 
     /**
      * Dependencies
@@ -96,16 +96,6 @@ class UserData extends AbstractModel implements
     }
 
     /**
-     * Retrieve the client IP address.
-     *
-     * @return integer|null
-     */
-    public function getIp()
-    {
-        return $this->ip;
-    }
-
-    /**
      * Set the origin language.
      *
      * @param  string $lang The language code.
@@ -125,16 +115,6 @@ class UserData extends AbstractModel implements
         $this->lang = $lang;
 
         return $this;
-    }
-
-    /**
-     * Retrieve the language.
-     *
-     * @return string
-     */
-    public function getLang()
-    {
-        return $this->lang;
     }
 
     /**
@@ -183,16 +163,6 @@ class UserData extends AbstractModel implements
     }
 
     /**
-     * Retrieve the origin of the object submission.
-     *
-     * @return string
-     */
-    public function getOrigin()
-    {
-        return $this->origin;
-    }
-
-    /**
      * Set when the object was created.
      *
      * @param  DateTimeInterface|string|null $timestamp The timestamp at object's creation.
@@ -228,16 +198,6 @@ class UserData extends AbstractModel implements
         $this->ts = $timestamp;
 
         return $this;
-    }
-
-    /**
-     * Retrieve the creation timestamp.
-     *
-     * @return DateTimeInterface|null
-     */
-    public function getTs()
-    {
-        return $this->ts;
     }
 
     /**

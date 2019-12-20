@@ -48,10 +48,10 @@ class ObjectScheduleTest extends AbstractTestCase
      */
     public function testSetTargetType()
     {
-        $this->assertNull($this->obj->targetType());
+        $this->assertNull($this->obj['targetType']);
         $ret = $this->obj->setTargetType('foobar');
         $this->assertSame($ret, $this->obj);
-        $this->assertEquals('foobar', $this->obj->targetType());
+        $this->assertEquals('foobar', $this->obj['targetType']);
 
         $this->expectException('\InvalidArgumentException');
         $this->obj->setTargetType(false);
@@ -62,10 +62,10 @@ class ObjectScheduleTest extends AbstractTestCase
      */
     public function testSetTargetId()
     {
-        $this->assertNull($this->obj->targetId());
+        $this->assertNull($this->obj['targetId']);
         $ret = $this->obj->setTargetId(42);
         $this->assertSame($ret, $this->obj);
-        $this->assertEquals(42, $this->obj->targetId());
+        $this->assertEquals(42, $this->obj['targetId']);
     }
 
     /**
@@ -73,10 +73,10 @@ class ObjectScheduleTest extends AbstractTestCase
      */
     public function testSetDataDiff()
     {
-        $this->assertEquals([], $this->obj->dataDiff());
+        $this->assertEquals([], $this->obj['dataDiff']);
         $ret = $this->obj->setDataDiff(['foo'=>42]);
         $this->assertSame($ret, $this->obj);
-        $this->assertEquals(['foo'=>42], $this->obj->dataDiff());
+        $this->assertEquals(['foo'=>42], $this->obj['dataDiff']);
     }
 
     /**
@@ -84,10 +84,10 @@ class ObjectScheduleTest extends AbstractTestCase
      */
     public function testSetProcessed()
     {
-        $this->assertFalse($this->obj->processed());
+        $this->assertFalse($this->obj['processed']);
         $ret = $this->obj->setProcessed(true);
         $this->assertSame($ret, $this->obj);
-        $this->assertTrue($this->obj->processed());
+        $this->assertTrue($this->obj['processed']);
     }
 
     /**
@@ -96,14 +96,14 @@ class ObjectScheduleTest extends AbstractTestCase
     public function testSetScheduledDate()
     {
         $obj = $this->obj;
-        $this->assertNull($obj->scheduledDate());
+        $this->assertNull($obj['scheduledDate']);
         $ret = $obj->setScheduledDate('2015-01-01 13:05:45');
         $this->assertSame($ret, $obj);
         $expected = new DateTime('2015-01-01 13:05:45');
-        $this->assertEquals($expected, $obj->scheduledDate());
+        $this->assertEquals($expected, $obj['scheduledDate']);
 
         $obj->setScheduledDate(null);
-        $this->assertNull($obj->scheduledDate());
+        $this->assertNull($obj['scheduledDate']);
 
         $this->expectException('\InvalidArgumentException');
         $obj->setScheduledDate(false);
@@ -124,14 +124,14 @@ class ObjectScheduleTest extends AbstractTestCase
     public function testSetProcessedDate()
     {
         $obj = $this->obj;
-        $this->assertNull($obj->processedDate());
+        $this->assertNull($obj['processedDate']);
         $ret = $obj->setProcessedDate('2015-01-01 13:05:45');
         $this->assertSame($ret, $obj);
         $expected = new DateTime('2015-01-01 13:05:45');
-        $this->assertEquals($expected, $obj->processedDate());
+        $this->assertEquals($expected, $obj['processedDate']);
 
         $obj->setProcessedDate(null);
-        $this->assertNull($obj->processedDate());
+        $this->assertNull($obj['processedDate']);
 
         $this->expectException('\InvalidArgumentException');
         $obj->setProcessedDate(false);
@@ -154,15 +154,15 @@ class ObjectScheduleTest extends AbstractTestCase
         $container = $this->container();
         $this->obj->setModelFactory($container['model/factory']);
 
-        $this->assertFalse($this->obj->process());
+        $this->assertFalse($this->obj['process']);
 
         $this->obj->setTargetType('charcoal/object/content');
-        $this->assertFalse($this->obj->process());
+        $this->assertFalse($this->obj['process']);
 
         $this->obj->setTargetId(42);
-        $this->assertFalse($this->obj->process());
+        $this->assertFalse($this->obj['process']);
 
-        //q$this->obj->process();
+        //q$this->obj['process'];
     }
 
     /**

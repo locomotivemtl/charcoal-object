@@ -520,7 +520,7 @@ trait RoutableTrait
             return $slug;
         }
 
-        $url = (string)$this->getLatestObjectRoute($lang)->getSlug();
+        $url = (string)$this->getLatestObjectRoute($lang)['slug'];
         return $url;
     }
 

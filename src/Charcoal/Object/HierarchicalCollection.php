@@ -85,7 +85,7 @@ class HierarchicalCollection extends CharcoalCollection
 
         if (empty($rootObjects) && !empty($childObjects)) {
             foreach ($childObjects as $parentId => $children) {
-                $parentObj = $children[0]->master();
+                $parentObj = $children[0]['master'];
                 $parentObj->auxiliary = true;
 
                 $rootObjects[] = $parentObj;
